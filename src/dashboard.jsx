@@ -15,20 +15,35 @@ const languages = ISO6391.getAllNames().map((name) => {
     };
   });
 
+
+  
+
 export const Dashboard = () => {
     const [context, setContext] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState('us');
     const [selectedLang, setSelectedLang] = useState('en');
+
+    const url = `https://newsdata.io/api/1/latest?apikey=pub_8471398a18d77380aac2ccf2abf1292a1b65e&q=news&country=${selectedCountry}&language=${selectedLang}`;
     
+
+
       useEffect(()=>{
+        console.log("Selected Country:", selectedCountry);
+        console.log("selected Lang:", selectedLang);
+
+        //function to get the news
         const request = async () => {
-            const url = `https://newsapi.org/v2/top-headlines?country=${selectedCountry}&q=news&apiKey=7f73c51e349b4424ba9ee31f250f1eeb`;
+            console.log("Fetching from:", url);
 ;
                 if (navigator.onLine) {
                     try {
                     const response = await fetch(url);
+                    if (!response.ok) {
+        throw new Error(`API returned status: ${response.status}`);
+    }
                     const data = await response.json();
-                    setContext(data.articles);
+                    console.log("Fetched Data:", data);
+                    setContext(data.results);
                 }
                 catch {
                     console.log('Error fetching data');
@@ -38,8 +53,29 @@ export const Dashboard = () => {
             }
         };
 
+        //get users current country location to fecth news from there
+        const getLocation = ()=>{
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition((position)=>{
+                    const {latitude, longitude} = position.coords;
+                    console.log(latitude, longitude);
+                    const locationUrl = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
+                    fetch(locationUrl)
+                    .then(res => res.json())
+                    .then(data =>{
+                        const { address } = data;
+                        setSelectedCountry(address.country_code || address.country);
+                        console.log(selectedCountry);
+                    })            
+                })
+            }
+            
+          }
+    
+
         request();
-      },[selectedCountry]);
+        getLocation();
+      },[selectedCountry, selectedLang]);
     return (
         <>
         <div className="nav">
@@ -61,12 +97,12 @@ export const Dashboard = () => {
         <div id="content-container">
             {context.map((results, index)=>(
                 <div key={index} className="contents">
-                    <img src={results.urlToImage} alt={results.title || "news image"} />
+                    <img src={results.image_url} alt={results.title || "news image"} />
                     <h3>{results.title}</h3>
                     <h5>{results.description}</h5>
                     <p>{results.content}</p>
-                    <h4>{results.author}</h4>
-                    <a href={results.url} target="_self">read more</a>
+                    <h4>{results.creator}</h4>
+                    <a href={results.link} target="_self">read more</a>
                     </div>
             ))}
             </div>
