@@ -20,7 +20,7 @@ const languages = ISO6391.getAllNames().map((name) => {
 
 export const Dashboard = () => {
     const [context, setContext] = useState([]);
-    const [selectedCountry, setSelectedCountry] = useState('us');
+    const [selectedCountry, setSelectedCountry] = useState(localStorage.getItem('selectedCountry') || 'us');
     const [selectedLang, setSelectedLang] = useState('en');
 
     const url = `https://newsdata.io/api/1/latest?apikey=pub_8471398a18d77380aac2ccf2abf1292a1b65e&q=news&country=${selectedCountry}&language=${selectedLang}`;
@@ -52,9 +52,13 @@ export const Dashboard = () => {
                 alert('no internent connection');
             }
         };
+        request();
+      },[selectedCountry, selectedLang]);
 
-        //get users current country location to fecth news from there
-        const getLocation = ()=>{
+
+      useEffect(()=>{
+        if(!localStorage.getItem('selectedCountry')){
+             //get users current country location to fecth news from there
             if(navigator.geolocation){
                 navigator.geolocation.getCurrentPosition((position)=>{
                     const {latitude, longitude} = position.coords;
@@ -69,13 +73,10 @@ export const Dashboard = () => {
                     })            
                 })
             }
-            
-          }
     
+        }
+      }, [])
 
-        request();
-        getLocation();
-      },[selectedCountry, selectedLang]);
     return (
         <>
         <div className="nav">
