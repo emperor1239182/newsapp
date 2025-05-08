@@ -25,33 +25,52 @@ export const Dashboard = () => {
 
     const url = `https://newsdata.io/api/1/latest?apikey=pub_8471398a18d77380aac2ccf2abf1292a1b65e&q=news&country=${selectedCountry}&language=${selectedLang}`;
     
-
-
       useEffect(()=>{
         console.log("Selected Country:", selectedCountry);
         console.log("selected Lang:", selectedLang);
 
         //function to get the news
-        const request = async () => {
-            console.log("Fetching from:", url);
-;
-                if (navigator.onLine) {
-                    try {
-                    const response = await fetch(url);
-                    if (!response.ok) {
-        throw new Error(`API returned status: ${response.status}`);
-    }
-                    const data = await response.json();
-                    console.log("Fetched Data:", data);
-                    setContext(data.results);
-                }
-                catch {
-                    console.log('Error fetching data');
-                }
-            } else{
-                alert('no internent connection');
+       const request = async () => {
+    console.log("Fetching from:", url);
+
+    if (navigator.onLine) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`API returned status: ${response.status}`);
             }
-        };
+            const data = await response.json();
+            console.log("Fetched Data:", data);
+            setContext(data.results);
+
+            // Translate the content
+            const translatedResults = await Promise.all(
+                data.results.map(async (article) => {
+                    const res = await fetch("https://libretranslate.de/translate", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            q: article.content, // Translate actual content
+                            source: "auto",
+                            target: selectedLang,
+                            format: "text"
+                        }),
+                        headers: { "Content-Type": "application/json" }
+                    });
+                    const translated = await res.json();
+                    console.log('translating', translated);
+                    return { ...article, content: translated.translatedText };
+                })
+            );
+
+            setContext(translatedResults);
+        } catch (error) {
+            console.log("Error fetching or translating data:", error);
+        }
+    } else {
+        alert("No internet connection");
+    }
+};
+
         request();
       },[selectedCountry, selectedLang]);
 
@@ -76,6 +95,10 @@ export const Dashboard = () => {
     
         }
       }, [])
+
+      useEffect(()=>{
+
+      })
 
     return (
         <>
