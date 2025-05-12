@@ -19,6 +19,46 @@ html{
         padding: 4px 8px;
         background-color:ghostwhite;
     }
+    .toolBar{
+        height: 100%;
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Stay on top */
+        top: 0; /* Stay at the top */
+        left: 0;
+        background-color: #111; /* Black*/
+        overflow-x: hidden; 
+        padding-top: 50px; 
+        border-radius: 4px;
+        p{
+            color: white;
+            font-size: small;
+        }
+        .close{
+            color: #818181;
+            font-size: 30px;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .close:hover{
+            color: white;
+        }
+
+        .newsList{
+            li{
+                color: white;
+                padding:  13px 8px;
+                font-size: 17px;
+                 color: #818181;
+                 cursor: pointer;
+            }
+            li:hover{
+                color: white;
+            }
+        }
+    
+    }
 }
 #content-container{
     display: flex;
