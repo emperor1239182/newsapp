@@ -2,7 +2,7 @@ import { FaSearch } from "react-icons/fa";
 import { SearchContext } from "./searchContext";
 import { useContext } from "react";
 
-const SearchInput = ({onSearch}) => {
+export const SearchInput = ({onSearch}) => {
     const { inputValue, setInputValue } = useContext(SearchContext);
 
   return (
@@ -34,4 +34,3 @@ const SearchInput = ({onSearch}) => {
   );
 };
 
-export default SearchInput;

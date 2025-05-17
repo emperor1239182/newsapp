@@ -2,9 +2,10 @@ import { FaBars, FaTimes, FaSearch} from "react-icons/fa"
 import { getData } from "country-list"
 import ISO6391 from 'iso-639-1';
 import { useState, useEffect } from "react";
-import SearchInput from "./search";
+import {SearchInput} from "./search"
 import { useContext } from "react";
 import { SearchContext } from "./searchContext";
+import { Footer } from "./footer";
 
 const countries = getData().map((country)=>({
     label: country.name,
@@ -123,6 +124,7 @@ export const Dashboard = () => {
             <FaBars onClick={() => setNewsList(prevState => !prevState)}/>
             <h1 className="header">Multilingua News Aggregator</h1>
             </div>
+            
 
             {/*desktop selections */}
             <select className="selection" value={selectedCountry} onChange={(e)=> setSelectedCountry (e.target.value)}>
@@ -170,6 +172,7 @@ export const Dashboard = () => {
                     </div>
             ))}
             </div>
+            <Footer/>
         </>
     )
 }

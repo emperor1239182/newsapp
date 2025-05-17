@@ -29,11 +29,11 @@ html{
     }
     .toolBar{
         height: 100%;
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Stay on top */
-        top: 0; /* Stay at the top */
+        position: fixed; 
+        z-index: 1; 
+        top: 0; 
         left: 0;
-        background-color: #111; /* Black*/
+        background-color: #111111eb;
         overflow-x: hidden; 
         padding-top: 50px; 
         p{
@@ -80,7 +80,17 @@ html{
         height: 100px;
     
 }
-
+.footerContainer{
+    background-color: #d0cdcd6e;
+    padding: 20px;
+    margin-top: 30px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.footer{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
 @media  screen and (max-width: 600px) {
     .selection{
         display: none;
@@ -95,11 +105,14 @@ html{
     .mobile-selection{
         @include selections;
     }
+    .footer{
+        grid-template-columns: auto auto;
+    }
     
 }
 @media screen and (min-width: 600px) {
     #search{
-        display: none;
+        display: block;
     }
     .mHeader{
         display: none;
@@ -111,3 +124,4 @@ html{
         display: none;
     }
 }
+
