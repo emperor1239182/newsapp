@@ -26,8 +26,14 @@ export const Dashboard = () => {
     const [selectedLang, setSelectedLang] = useState('en');
     const [newsList, setNewsList] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("news"); // Default to "news"
-    const { inputValue } = useContext(SearchContext);
+    const { inputValue, setInputValue } = useContext(SearchContext);
 
+    const handleSearchClick = () => {
+        if (inputValue.trim() !== "") {
+          setSelectedCategory(inputValue.toLowerCase()); 
+          setInputValue('')
+        }
+      };
 
     const url = `https://newsdata.io/api/1/latest?apikey=pub_8471398a18d77380aac2ccf2abf1292a1b65e&q=${selectedCategory}&country=${selectedCountry}&language=${selectedLang}`;
     
@@ -64,7 +70,7 @@ export const Dashboard = () => {
 
 
       useEffect(()=>{
-        if(!localStorage.getItem('selectedCountry') & navigator.onLine){
+        if(!localStorage.getItem('selectedCountry') && navigator.onLine){
              //get users current country location to fecth news from there
             if(navigator.geolocation){
                 navigator.geolocation.getCurrentPosition((position)=>{
@@ -84,11 +90,9 @@ export const Dashboard = () => {
         }
       }, [])
 
-      useEffect(() => {
-        if (inputValue.trim() !== "") {
-          setSelectedCategory(inputValue.toLowerCase()); // Use input value as category
-        }
-      }, [inputValue]);
+
+     
+      
     
 
     return (
@@ -131,7 +135,8 @@ export const Dashboard = () => {
                         <option key={lang.value} value={lang.value}>{lang.label}</option>
                     ))}
                 </select>
-                <SearchInput/>
+                <SearchInput onSearch={handleSearchClick} />
+
                 
 
         </div>

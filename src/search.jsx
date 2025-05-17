@@ -2,8 +2,9 @@ import { FaSearch } from "react-icons/fa";
 import { SearchContext } from "./searchContext";
 import { useContext } from "react";
 
-const SearchInput = () => {
+const SearchInput = ({onSearch}) => {
     const { inputValue, setInputValue } = useContext(SearchContext);
+
   return (
     <div style={{ position: "relative" }} id="search">
       <FaSearch
@@ -14,6 +15,7 @@ const SearchInput = () => {
           transform: "translateY(-50%)",
           color: "#aaa",
         }}
+        onClick={onSearch}
       />
       <input
         type="text"
