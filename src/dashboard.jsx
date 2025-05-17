@@ -1,7 +1,10 @@
-import { FaBars, FaTimes} from "react-icons/fa"
+import { FaBars, FaTimes, FaSearch} from "react-icons/fa"
 import { getData } from "country-list"
 import ISO6391 from 'iso-639-1';
 import { useState, useEffect } from "react";
+import SearchInput from "./search";
+import { useContext } from "react";
+import { SearchContext } from "./SearchProvider";
 
 const countries = getData().map((country)=>({
     label: country.name,
@@ -15,10 +18,7 @@ const languages = ISO6391.getAllNames().map((name) => {
     };
   });
 
-  
   const lists = ['News','Sport','Entertainment','Music','Lifestyle','Politics','Education','Health','Food','Tech','Finance','Religion'];
-
-  
 
 export const Dashboard = () => {
     const [context, setContext] = useState([]);
@@ -26,6 +26,7 @@ export const Dashboard = () => {
     const [selectedLang, setSelectedLang] = useState('en');
     const [newsList, setNewsList] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("news"); // Default to "news"
+    const { inputValue } = useContext(SearchContext);
 
 
     const url = `https://newsdata.io/api/1/latest?apikey=pub_8471398a18d77380aac2ccf2abf1292a1b65e&q=${selectedCategory}&country=${selectedCountry}&language=${selectedLang}`;
@@ -49,25 +50,7 @@ export const Dashboard = () => {
             setContext(data.results);
 
             // Translate content
-            const translatedResults = await Promise.all(
-                data.results.map(async (article) => {
-                    const res = await fetch("https://libretranslate.de/translate", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            q: article.content, // Translate actual content
-                            source: "auto",
-                            target: selectedLang,
-                            format: "text"
-                        }),
-                        headers: { "Content-Type": "application/json" }
-                    });
-                    const translated = await res.json();
-                    console.log('translating', translated);
-                    return { ...article, content: translated.translatedText };
-                })
-            );
-
-            setContext(translatedResults);
+                
         } catch (error) {
             console.log("Error fetching or translating data:", error);
         }
@@ -100,36 +83,71 @@ export const Dashboard = () => {
     
         }
       }, [])
+    
 
     return (
         <>
         <div className="nav">
+
             {newsList? 
             <div className="toolBar"  style={{ width: newsList ? "250px" : "0" }}>
                 <FaTimes className="close" onClick={() => setNewsList(prevState => !prevState)} />
                     <p>Choose your area of interest...</p>
             <ul className="newsList">
             {lists.map((e, index)=>(
-                <li key={index} onClick={() => setSelectedCategory(e.toLowerCase())}>{e}</li>
+               <li 
+               key={index} 
+               onClick={() => {
+                 setSelectedCategory(e.toLowerCase());
+                 setNewsList(prevState => !prevState);
+               }}
+             >
+               {e}
+             </li>
+             
             ))}
             </ul>
             </div> : null }
-            <div style={{display:'flex', justifyContent:'center', alignItems:'center', gap:30}}>
+
+            <div style={{display:'flex', alignItems:'center', justifyContent:'center', gap: 20}}>
             <FaBars onClick={() => setNewsList(prevState => !prevState)}/>
-            <h1>Multilingua News Aggregator</h1>
+            <h1 className="header">Multilingua News Aggregator</h1>
             </div>
+
+            {/*desktop selections */}
             <select className="selection" value={selectedCountry} onChange={(e)=> setSelectedCountry (e.target.value)}>
                 {countries.map((country)=>(
                     <option key={country.value} value={country.value}>{country.label}</option>
                 ))}
                 </select>
-                <select className="selection" value={selectedLang} onChange={(e)=> setSelectedLang(e.target.value)}>
+                <select className="selection" value={selectedLang} onChange={(e)=> setSelectedLang(e.target.value) }>
+                    {languages.map((lang)=>(
+                        <option key={lang.value} value={lang.value}>{lang.label}</option>
+                    ))}
+                </select>
+                <SearchInput/>
+                
+
+        </div>
+
+        {/*mobile view*/}
+        <h1 style={{fontSize:"1.6rem", margin:"20px 0"}} className="mHeader">Multilingua News Aggregator</h1> 
+        <div style={{display:'flex', justifyContent:'space-between', gap:'5px'}}>
+        <select className="mobile-selection" value={selectedCountry} onChange={(e)=> setSelectedCountry (e.target.value)}>
+                {countries.map((country)=>(
+                    <option key={country.value} value={country.value}>{country.label}</option>
+                ))}
+                </select>
+                <select className="mobile-selection" value={selectedLang} onChange={(e)=> setSelectedLang(e.target.value) }>
                     {languages.map((lang)=>(
                         <option key={lang.value} value={lang.value}>{lang.label}</option>
                     ))}
                 </select>
         </div>
+        
+       
         <div id="content-container">
+        <div id="google_translate_element"></div> {/* Add this */}
             {context.map((results, index)=>(
                 <div key={index} className="contents">
                     <img src={results.image_url} alt={results.title || "news image"} />

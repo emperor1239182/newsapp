@@ -5,19 +5,27 @@
 html{
     font-family: Arial, Helvetica, sans-serif;
 }
-.container{
-    padding: 0 50px;
+
+@mixin selections{
+    width: 100px;
+    font-weight: bold;
+    padding: 4px 8px;
+    background-color: ghostwhite;
+    border-radius: 6px;
+    color: rgb(47, 46, 46);
 }
+
+.container{
+    padding: 10px 25px;
+}
+
 .nav{
     display: flex;
     justify-content: space-between;
     align-items: center;
     .selection{
-        width: 100px;
-        border-radius: 8px;
-        font-weight: bold;
-        padding: 4px 8px;
-        background-color:ghostwhite;
+       @include selections;
+       
     }
     .toolBar{
         height: 100%;
@@ -28,7 +36,6 @@ html{
         background-color: #111; /* Black*/
         overflow-x: hidden; 
         padding-top: 50px; 
-        border-radius: 4px;
         p{
             color: white;
             font-size: small;
@@ -59,6 +66,7 @@ html{
         }
     
     }
+    
 }
 #content-container{
     display: flex;
@@ -71,4 +79,35 @@ html{
         width: 300px;
         height: 100px;
     
+}
+
+@media  screen and (max-width: 600px) {
+    .selection{
+        display: none;
+    }
+    .header{
+        display:none;
+    }
+    #search{
+        display:block;
+        left: 0;
+    }
+    .mobile-selection{
+        @include selections;
+    }
+    
+}
+@media screen and (min-width: 600px) {
+    #search{
+        display: none;
+    }
+    .mHeader{
+        display: none;
+    }
+    .header{
+        font-size: 1.3rem;
+    }
+    .mobile-selection{
+        display: none;
+    }
 }
