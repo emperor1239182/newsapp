@@ -4,7 +4,7 @@ import ISO6391 from 'iso-639-1';
 import { useState, useEffect } from "react";
 import SearchInput from "./search";
 import { useContext } from "react";
-import { SearchContext } from "./SearchProvider";
+import { SearchContext } from "./searchContext";
 
 const countries = getData().map((country)=>({
     label: country.name,
@@ -83,6 +83,12 @@ export const Dashboard = () => {
     
         }
       }, [])
+
+      useEffect(() => {
+        if (inputValue.trim() !== "") {
+          setSelectedCategory(inputValue.toLowerCase()); // Use input value as category
+        }
+      }, [inputValue]);
     
 
     return (
