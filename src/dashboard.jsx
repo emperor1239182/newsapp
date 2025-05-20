@@ -164,7 +164,7 @@ export const Dashboard = () => {
         
        
         <div id="content-container">
-  <div id="google_translate_element"></div>
+  
   {isLoading ? (
     [...Array(6)].map((_, index) => (
       <div key={index} className="skeleton-card"></div>
@@ -181,9 +181,9 @@ export const Dashboard = () => {
       </div>
     ))
   )}
-  <Footer/>
+  
 </div>
-        
+<Footer/>
         </>
     )
 }

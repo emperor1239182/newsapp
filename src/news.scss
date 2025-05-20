@@ -4,6 +4,12 @@
 }
 html{
     font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+    margin: 0;
+}
+body{
+    height: 100%;
+    margin: 0;
 }
 
 @mixin selections{
@@ -16,6 +22,7 @@ html{
 }
 
 .container{
+    position: relative;
     padding: 10px 25px;
 }
 
@@ -98,7 +105,7 @@ html{
 .footerContainer{
     background-color: #d0cdcd6e;
     padding: 20px;
-    margin-top: 30px;
+    margin-top: 90px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     height: auto;
@@ -126,6 +133,16 @@ html{
     100% {
       background-position: -100% 0;
     }
+  }
+  
+
+  #root, .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  #content-container{
+    flex: 1;
   }
   
 
