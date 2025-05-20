@@ -28,6 +28,8 @@ export const Dashboard = () => {
     const [newsList, setNewsList] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("news"); // Default to "news"
     const { inputValue, setInputValue } = useContext(SearchContext);
+    const [isLoading, setIsLoading] = useState(true); // Add this
+
 
     const handleSearchClick = () => {
         if (inputValue.trim() !== "") {
@@ -43,28 +45,29 @@ export const Dashboard = () => {
         console.log("selected Lang:", selectedLang);
 
         //function to get the news
-       const request = async () => {
-    console.log("Fetching from:", url);
-
-    if (navigator.onLine) {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`API returned status: ${response.status}`);
+        const request = async () => {
+            console.log("Fetching from:", url);
+          
+            if (navigator.onLine) {
+              try {
+                setIsLoading(true); // start loading
+                const response = await fetch(url);
+                if (!response.ok) {
+                  throw new Error(`API returned status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log("Fetched Data:", data);
+                setContext(data.results);
+              } catch (error) {
+                console.log("Error fetching or translating data:", error);
+              } finally {
+                setIsLoading(false); // end loading
+              }
+            } else {
+              alert("No internet connection");
             }
-            const data = await response.json();
-            console.log("Fetched Data:", data);
-            setContext(data.results);
-
-            // Translate content
-                
-        } catch (error) {
-            console.log("Error fetching or translating data:", error);
-        }
-    } else {
-        alert("No internet connection");
-    }
-};
+          };
+          
 
         request();
       },[selectedCategory, selectedCountry, selectedLang]);
@@ -98,8 +101,8 @@ export const Dashboard = () => {
 
     return (
         <>
+        <div className="topBar">
         <div className="nav">
-
             {newsList? 
             <div className="toolBar"  style={{ width: newsList ? "250px" : "0" }}>
                 <FaTimes className="close" onClick={() => setNewsList(prevState => !prevState)} />
@@ -120,7 +123,7 @@ export const Dashboard = () => {
             </ul>
             </div> : null }
 
-            <div style={{display:'flex', alignItems:'center', justifyContent:'center', gap: 20}}>
+            <div style={{display:'flex', alignItems:'center', justifyContent:'center', gap: 20}} id="topic">
             <FaBars onClick={() => setNewsList(prevState => !prevState)}/>
             <h1 className="header">Multilingua News Aggregator</h1>
             </div>
@@ -142,6 +145,7 @@ export const Dashboard = () => {
                 
 
         </div>
+        </div>
 
         {/*mobile view*/}
         <h1 style={{fontSize:"1.6rem", margin:"20px 0"}} className="mHeader">Multilingua News Aggregator</h1> 
@@ -160,19 +164,26 @@ export const Dashboard = () => {
         
        
         <div id="content-container">
-        <div id="google_translate_element"></div> {/* Add this */}
-            {context.map((results, index)=>(
-                <div key={index} className="contents">
-                    <img src={results.image_url} alt={results.title || "news image"} />
-                    <h3>{results.title}</h3>
-                    <h5>{results.description}</h5>
-                    <p>{results.content}</p>
-                    <h4>{results.creator}</h4>
-                    <a href={results.link} target="_self">read more</a>
-                    </div>
-            ))}
-            </div>
-            <Footer/>
+  <div id="google_translate_element"></div>
+  {isLoading ? (
+    [...Array(6)].map((_, index) => (
+      <div key={index} className="skeleton-card"></div>
+    ))
+  ) : (
+    context.map((results, index) => (
+      <div key={index} className="contents">
+        <img src={results.image_url} alt={results.title || "news image"} />
+        <h3>{results.title}</h3>
+        <h5>{results.description}</h5>
+        <p>{results.content}</p>
+        <h4>{results.creator}</h4>
+        <a href={results.link} target="_self">read more</a>
+      </div>
+    ))
+  )}
+  <Footer/>
+</div>
+        
         </>
     )
 }

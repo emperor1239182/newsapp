@@ -10,7 +10,7 @@ html{
     width: 100px;
     font-weight: bold;
     padding: 4px 8px;
-    background-color: ghostwhite;
+    background-color: rgb(170, 170, 172);
     border-radius: 6px;
     color: rgb(47, 46, 46);
 }
@@ -19,6 +19,14 @@ html{
     padding: 10px 25px;
 }
 
+.topBar{
+    position: sticky;
+    top: 0;
+    background-color: #64626297;
+    padding: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.485);
+    width: auto;
+}
 .nav{
     display: flex;
     justify-content: space-between;
@@ -73,12 +81,19 @@ html{
     flex-direction: column;
     gap: 40px;
      margin-top: 40px;
-}
-.contents > img{
-    
-        width: 300px;
-        height: 100px;
-    
+
+     .contents{
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+     }
+
+     .contents > img{
+        width: 100%;
+        height: auto;
+        max-width: 500px;
+        
+    }
 }
 .footerContainer{
     background-color: #d0cdcd6e;
@@ -86,11 +101,34 @@ html{
     margin-top: 30px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    height: auto;
 }
 .footer{
     display: grid;
     grid-template-columns: auto auto auto auto;
+    gap: 12;
 }
+
+.skeleton-card {
+    width: 100%;
+    max-width: 500px;
+    height: 300px;
+    background: linear-gradient(-90deg, #e0e0e0 0%, #f5f5f5 50%, #e0e0e0 100%);
+    background-size: 400% 400%;
+    border-radius: 8px;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      background-position: 100% 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
+  }
+  
+
 @media  screen and (max-width: 600px) {
     .selection{
         display: none;

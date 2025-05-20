@@ -21,7 +21,7 @@ export const Footer = () =>{
         <section className="footerContainer">
 
         <div>
-        <h1 style={{textAlign:'left'}}>Multilingua News Aggregator</h1>
+        <h1 >Multilingua News Aggregator</h1>
         <span className='time' >{hour} : {minute} : {seconds} {name}</span>
         <span style={{display:'flex', justifyContent:'space-between', width:'100px', marginBottom:'10px'}}>
                     <FaFacebook size={15}  />
@@ -40,20 +40,20 @@ export const Footer = () =>{
                      <p>Hotels</p>
                      </div>
                      
-                     <div style={{marginTop:'21px'}}>
+                     <div >
                         <p>Apartments</p>
                         <p>Resorts</p>
                         <p>Villas</p>
                         <p>Hotels</p>
                         <p>Guest houses</p>
                      </div>
-                     <div style={{marginTop:'28px'}}>
+                     <div >
                         <p>Unique places</p>
                         <p>Reviews</p>
                         <p>Travel communities</p>
                         <p>Seasonal and holiday deals</p>
                      </div>
-                     <div style={{marginTop:'28px'}}>
+                     <div >
                         <p>Car render</p>
                         <p>Flight finder</p>
                         <p>Restaurant reservations</p>
