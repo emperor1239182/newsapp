@@ -1,6 +1,5 @@
 import { FaBars, FaTimes, FaSearch} from "react-icons/fa"
 import { getData } from "country-list"
-import ISO6391 from 'iso-639-1';
 import { useState, useEffect } from "react";
 import {SearchInput} from "./search"
 import { useContext } from "react";
@@ -11,24 +10,16 @@ const countries = getData().map((country)=>({
     label: country.name,
     value: country.code.toLowerCase(),
 }))
-const languages = ISO6391.getAllNames().map((name) => {
-    const code = ISO6391.getCode(name);
-    return {
-      label: name,
-      value: code,
-    };
-  });
 
   const lists = ['News','Sport','Entertainment','Music','Lifestyle','Politics','Education','Health','Food','Tech','Finance','Religion'];
 
 export const Dashboard = () => {
     const [context, setContext] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState(localStorage.getItem('selectedCountry') || 'us');
-    const [selectedLang, setSelectedLang] = useState('en');
     const [newsList, setNewsList] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState("news"); // Default to "news"
+    const [selectedCategory, setSelectedCategory] = useState("news"); 
     const { inputValue, setInputValue } = useContext(SearchContext);
-    const [isLoading, setIsLoading] = useState(true); // Add this
+    const [isLoading, setIsLoading] = useState(true); 
 
 
     const handleSearchClick = () => {
@@ -38,11 +29,11 @@ export const Dashboard = () => {
         }
       };
 
-    const url = `https://newsdata.io/api/1/latest?apikey=pub_8471398a18d77380aac2ccf2abf1292a1b65e&q=${selectedCategory}&country=${selectedCountry}&language=${selectedLang}`;
+    const url = `https://newsdata.io/api/1/latest?apikey=pub_8471398a18d77380aac2ccf2abf1292a1b65e&q=${selectedCategory}&country=${selectedCountry}`;
     
       useEffect(()=>{
         console.log("Selected Country:", selectedCountry);
-        console.log("selected Lang:", selectedLang);
+       
 
         //function to get the news
         const request = async () => {
@@ -70,7 +61,7 @@ export const Dashboard = () => {
           
 
         request();
-      },[selectedCategory, selectedCountry, selectedLang]);
+      },[selectedCategory, selectedCountry]);
 
 
       useEffect(()=>{
@@ -107,10 +98,37 @@ export const Dashboard = () => {
         }
       }, []);
 
-
-     
+      useEffect(() => {
+        function updateLanguage() {
+          const selectElement = document.querySelector(".goog-te-combo");
+          if (selectElement) {
+            const selectedLang = selectElement.value; // Get selected language
       
-    
+            // Mapping language codes to readable text
+            const langMap = {
+              en: "English",
+              fr: "French",
+              de: "German",
+              es: "Spanish",
+              ar: "Arabic",
+              "zh-CN": "Chinese",
+            };
+      
+            // Update the div's text with the selected language
+            document.querySelector(".mobile-selection.lang.notranslate").textContent = langMap[selectedLang] || "English";
+          }
+        }
+      
+        // Detect changes in the Google Translate dropdown
+        document.addEventListener("change", updateLanguage);
+      
+        return () => {
+          document.removeEventListener("change", updateLanguage);
+        };
+      }, []);
+      
+       
+     
 
     return (
         <>
@@ -148,11 +166,9 @@ export const Dashboard = () => {
                     <option key={country.value} value={country.value}>{country.label}</option>
                 ))}
                 </select>
-                <select className="selection" value={selectedLang} onChange={(e)=> setSelectedLang(e.target.value) }>
-                    {languages.map((lang)=>(
-                        <option key={lang.value} value={lang.value}>{lang.label}</option>
-                    ))}
-                </select>
+                <div className="selection notranslate" translate="no">
+                English
+                </div>
                 <SearchInput onSearch={handleSearchClick} />
 
                 
@@ -168,14 +184,13 @@ export const Dashboard = () => {
                     <option key={country.value} value={country.value}>{country.label}</option>
                 ))}
                 </select>
-                <select className="mobile-selection" value={selectedLang} onChange={(e)=> setSelectedLang(e.target.value) }>
-                    {languages.map((lang)=>(
-                        <option key={lang.value} value={lang.value}>{lang.label}</option>
-                    ))}
-                </select>
+                <div className="mobile-selection lang notranslate" translate="no" >
+              English
+                </div>
         </div>
         
         <div id="google_translate_element"></div>
+
 
         <div id="content-container">
   

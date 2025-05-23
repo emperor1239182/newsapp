@@ -54,12 +54,13 @@ body{
         p{
             color: white;
             font-size: small;
+            margin-top: 20px;
         }
         .close{
             color: #818181;
             font-size: 30px;
             position: absolute;
-            top: 5px;
+            top: 40px;
             right: 10px;
             cursor: pointer;
         }
@@ -68,6 +69,7 @@ body{
         }
 
         .newsList{
+            margin-top: 18px;
             li{
                 color: white;
                 padding:  13px 8px;
@@ -143,6 +145,15 @@ body{
   }
   #content-container{
     flex: 1;
+  }
+
+  #google_translate_element{
+    position:fixed;
+    right: 20px;
+    bottom: 80px;
+  }
+  .lang{
+    font-size: small;
   }
   
 
