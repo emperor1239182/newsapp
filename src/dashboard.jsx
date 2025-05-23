@@ -94,6 +94,19 @@ export const Dashboard = () => {
         }
       }, [])
 
+      useEffect(() => {
+        if (window.google && window.google.translate) {
+          new window.google.translate.TranslateElement(
+            {
+              pageLanguage: "en", // default language of your site
+              includedLanguages: "en,fr,de,es,ar,zh-CN", // limit if needed
+              layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            },
+            "google_translate_element"
+          );
+        }
+      }, []);
+
 
      
       
@@ -162,7 +175,8 @@ export const Dashboard = () => {
                 </select>
         </div>
         
-       
+        <div id="google_translate_element"></div>
+
         <div id="content-container">
   
   {isLoading ? (
