@@ -90,7 +90,7 @@ export const Dashboard = () => {
           new window.google.translate.TranslateElement(
             {
               pageLanguage: "en", 
-              includedLanguages: "en,fr,de,es,ar,zh-CN,yr,twi", 
+              includedLanguages: "en,fr,de,es,ar,zh-CN,yr,ak,yo,ig,ha,af", 
               layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
             },
             "google_translate_element"
