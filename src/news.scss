@@ -20,6 +20,10 @@ body{
     border-radius: 6px;
     color: rgb(47, 46, 46);
 }
+@mixin lang{
+    font-weight: bold;
+    padding: 4px 8px;
+}
 
 .container{
     position: relative;
@@ -146,15 +150,11 @@ body{
   #content-container{
     flex: 1;
   }
-
   #google_translate_element{
-    position:fixed;
-    right: 20px;
-    bottom: 80px;
+    @include lang;
   }
-  .lang{
-    font-size: small;
-  }
+
+ 
   
 
 @media  screen and (max-width: 600px) {
@@ -173,6 +173,11 @@ body{
     }
     .footer{
         grid-template-columns: auto auto;
+    }
+    #google_translate_element{
+        position: fixed;
+        bottom: 40px;
+        right: 0;
     }
     
 }

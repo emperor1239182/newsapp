@@ -89,45 +89,16 @@ export const Dashboard = () => {
         if (window.google && window.google.translate) {
           new window.google.translate.TranslateElement(
             {
-              pageLanguage: "en", // default language of your site
-              includedLanguages: "en,fr,de,es,ar,zh-CN", // limit if needed
+              pageLanguage: "en", 
+              includedLanguages: "en,fr,de,es,ar,zh-CN,yr,twi", 
               layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
             },
             "google_translate_element"
           );
         }
       }, []);
-
-      useEffect(() => {
-        function updateLanguage() {
-          const selectElement = document.querySelector(".goog-te-combo");
-          if (selectElement) {
-            const selectedLang = selectElement.value; // Get selected language
       
-            // Mapping language codes to readable text
-            const langMap = {
-              en: "English",
-              fr: "French",
-              de: "German",
-              es: "Spanish",
-              ar: "Arabic",
-              "zh-CN": "Chinese",
-            };
       
-            // Update the div's text with the selected language
-            document.querySelector(".mobile-selection.lang.notranslate").textContent = langMap[selectedLang] || "English";
-          }
-        }
-      
-        // Detect changes in the Google Translate dropdown
-        document.addEventListener("change", updateLanguage);
-      
-        return () => {
-          document.removeEventListener("change", updateLanguage);
-        };
-      }, []);
-      
-       
      
 
     return (
@@ -166,9 +137,7 @@ export const Dashboard = () => {
                     <option key={country.value} value={country.value}>{country.label}</option>
                 ))}
                 </select>
-                <div className="selection notranslate" translate="no">
-                English
-                </div>
+                <div id="google_translate_element"></div>
                 <SearchInput onSearch={handleSearchClick} />
 
                 
@@ -184,12 +153,7 @@ export const Dashboard = () => {
                     <option key={country.value} value={country.value}>{country.label}</option>
                 ))}
                 </select>
-                <div className="mobile-selection lang notranslate" translate="no" >
-              English
-                </div>
         </div>
-        
-        <div id="google_translate_element"></div>
 
 
         <div id="content-container">
